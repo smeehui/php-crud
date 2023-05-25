@@ -22,16 +22,19 @@
     <div
         class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
         <div class="container mt-5 position-relative">
-            <div class="position-absolute d-flex justify-content-end" style="left: 0;right: 12px"><button id="btnAdd"
-                    class="btn btn-success">New product</button></div>
+            <div class=" bg-secondary rounded rounded-1 text-white d-flex p-2 position-relative">
+                <h3 class="flex-1">Product management</h3>
+                <button id="btnAdd" class="btn btn-success position-absolute"  style="right: 12px">New product</button>
+            </div>
             <table id="productTable" class="table table-striped ">
                 <thead class="bg-dark text-white table-hover">
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
                         <th scope="col" class="text-end">Quantity</th>
-                        <th scope="col" class="flex-1 text-center">Description</th>
                         <th scope="col" class="text-end">Price</th>
+                        <th scope="col" class="flex-1">Description</th>
+                        <th scope="col">Category</th>
                         <th scope="col" class="text-center">Action</th>
                     </tr>
                 </thead>
@@ -42,10 +45,9 @@
                                 <th scope="row">{{ $product->id }}</th>
                                 <td><a href="/products/{{ $product->id }}">{{ $product->name }}</a></td>
                                 <td class="text-end">{{ $product->quantity }}</td>
-                                <td class="text-center">{{ $product->description }}</td>
-                                </td>
-                                <td  class="text-end">{{ $product->price }}$</td>
-                                </td>
+                                <td class="text-end">{{ $product->price }}$</td>
+                                <td>{{ $product->description }}</td>
+                                <td>{{ $product->category->name }}</td>
                                 <td class="text-center">
                                     <div class="stack gap-1">
                                         <button data-pid={{ $product->id }} type="button"
@@ -73,11 +75,24 @@
                         <form method="post" id="prodCreateForm">
 
                             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>" />
-                            <div class="row mb-3">
-                                <div class="col-12">
-                                    <label for="productName" class="form-label">Name</label>
-                                    <input type="text" class="form-control" id="productName" name="name"
-                                        placeholder="Enter product's name ...">
+                            <div class="row mb3">
+                                <div class="col-6">
+                                    <div class="col-12">
+                                        <label for="productName" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="productName" name="name"
+                                            placeholder="Enter product's name ...">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="col-12">
+                                        <label for="productName" class="form-label">Category</label>
+                                        <select class="form-select" id="productCategory" name="category">
+                                            <option value="-1">---Select category---</option>
+                                            @foreach ($categories as $category)
+                                                <option value={{ $category->id }}>{{ $category->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -151,7 +166,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" data-bs-dismiss="modal" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-secondary"
+                            data-dismiss="modal">Cancel</button>
                         <button id="btnEditSubmit" type="button" class="btn btn-primary">Save</button>
                     </div>
                 </div>
@@ -168,11 +184,12 @@
                     </div>
                     <div class="modal-body">
                         <div id="modalDeleteContent" class="container-fluid">
-                            
+
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" data-bs-dismiss="modal" class="btn btn-secondary" data-dismiss="modal">Cancle</button>
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-secondary"
+                            data-dismiss="modal">Cancle</button>
                         <button id="btnDeleteConfirm" type="button" class="btn btn-danger">Confirm</button>
                     </div>
                 </div>
@@ -186,7 +203,7 @@
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 <script>
     $(document).ready(function() {
-       
+
         $('#exampleModal').on('show.bs.modal', event => {
             var button = $(event.relatedTarget);
             var modal = $(this);
@@ -211,6 +228,7 @@
         $('#btnDeleteConfirm').on('click', function(event) {
             handleDeleteProduct($(this).data("pid"));
         })
+
         function appendProductDataToForm(id) {
             const url = location.origin + "/api/products/" + id;
             console.log(url);
@@ -250,42 +268,44 @@
                     }
                 })
                 .done(data => {
-                   location.reload()
+                    location.reload()
                 })
                 .fail((err) => {
                     console.log(err);
                 })
         }
-        function showDeleteConfirm(id){
+
+        function showDeleteConfirm(id) {
             const url = location.origin + "/api/products/" + id;
             $.ajax({
                     url: url
                 })
                 .done(data => {
-                    $("#modalDeleteContent").text("Delete "+ data.name)
-                    $("#btnDeleteConfirm").data("pid",id);
+                    $("#modalDeleteContent").text("Delete " + data.name)
+                    $("#btnDeleteConfirm").data("pid", id);
                     $("#modalDelete").modal("show");
                 })
                 .fail((err) => {
                     console.log(err);
                 })
-           
+
         }
-        function handleDeleteProduct(id){
+
+        function handleDeleteProduct(id) {
             const url = location.origin + "/api/products/" + id;
             $.ajax({
                     url: url,
                     method: "delete",
                 })
                 .done(data => {
-                   location.reload()
+                    location.reload()
                 })
                 .fail((err) => {
                     console.log(err);
                 })
         }
         $('#productTable').DataTable({
-
+            lengthMenu: [5,15,30,60,100]
         });
     });
 </script>

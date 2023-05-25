@@ -23,12 +23,25 @@
                 <div class="card-body">
                     <h4 class="card-title">Product details:</h4>
                     <div class="vstack gap-1">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">{{$product->name}}</h4>
-                                <p class="card-text">Product's name:</p>
+                        <div class="col-12 d-flex">
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">{{$product->name}}</h4>
+                                        <p class="card-text">Product's name:</p>
+                                    </div>
+                                </div>
+                               
                             </div>
-                        </div>
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">{{$product->category->name}}</h4>
+                                        <p class="card-text">Product's category:</p>
+                                    </div>
+                                </div>
+                            </div>
+                       </div>
                        <div class="col-12 d-flex">
                             <div class="col-6">
                                 <div class="card">

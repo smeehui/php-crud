@@ -11,6 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('categories', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->string('name');
+            $table->softDeletes('deleted_at', $precision = 0);
+        });
+
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
@@ -18,7 +25,12 @@ return new class extends Migration
             $table->string('description');
             $table->double('price');
             $table->integer('quantity');
-            $table->softDeletes('deleted_at',$precision = 0);
+            // $table->integer('category_id');
+            $table->foreignId('category_id')->constrained(
+                table: 'categories',
+                indexName: 'posts_cate_id'
+            );
+            $table->softDeletes('deleted_at', $precision = 0);
         });
     }
 
@@ -28,5 +40,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('products');
+        Schema::dropIfExists('categories');
     }
 };
