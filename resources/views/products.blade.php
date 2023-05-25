@@ -85,9 +85,8 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="col-12">
-                                        <label for="productName" class="form-label">Category</label>
+                                        <label for="productCategory" class="form-label">Category</label>
                                         <select class="form-select" id="productCategory" name="category">
-                                            <option value="-1">---Select category---</option>
                                             @foreach ($categories as $category)
                                                 <option value={{ $category->id }}>{{ $category->name }}</option>
                                             @endforeach
@@ -137,13 +136,26 @@
                         <form method="post" id="prodEditForm" action="">
                             <input type="hidden" name="_method" value="put" />
                             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>" />
-                            <div class="row mb-3">
-                                <div class="col-12">
-                                    <label for="productNameEdit" class="form-label">Name</label>
-                                    <input type="text" class="form-control" id="productNameEdit" name="name"
-                                        placeholder="Enter product's name ...">
+                            <div class="row mb3">
+                                <div class="col-6">
+                                    <div class="col-12">
+                                        <label for="productNameEdit" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="productNameEdit" name="name"
+                                            placeholder="Enter product's name ...">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="col-12">
+                                        <label for="productCategoryEdit" class="form-label">Category</label>
+                                        <select class="form-select" id="productCategoryEdit" name="category">
+                                            @foreach ($categories as $category)
+                                                <option value={{ $category->id }}>{{ $category->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
+                            
                             <div class="row mb-3">
                                 <div class=" col-6">
                                     <label for="productPriceEdit" class="form-label">Price</label>
@@ -241,12 +253,14 @@
                         name,
                         price,
                         quantity,
-                        description
+                        description,
+                        category_id
                     } = data;
                     $("#productNameEdit").val(name);
                     $("#productPriceEdit").val(price);
                     $("#productQuantityEdit").val(quantity);
                     $("#productDescriptionEdit").val(description);
+                    $("#productCategoryEdit").val(category_id);
                     $("#modalEdit").modal("show");
                     $("#btnEditSubmit").data('pid', id);
                 })
@@ -265,6 +279,7 @@
                         price: $("#productPriceEdit").val() ?? undefined,
                         quantity: $("#productQuantityEdit").val() ?? undefined,
                         description: $("#productDescriptionEdit").val() ?? undefined,
+                        category: $("#productCategoryEdit").val() ?? undefined,
                     }
                 })
                 .done(data => {

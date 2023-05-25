@@ -30,7 +30,9 @@ Route::prefix("products")->group(function () {
         if ($request->quantity != null) {
             $product->quantity = (float)$request->quantity;
         }
-
+        if ($request->category != null) {
+            $product->category_id = $request->category;
+        }
         if ($request->description != null && trim($request->description) != "") {
             $product->description = trim($request->description);
         }
