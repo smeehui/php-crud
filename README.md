@@ -7,5 +7,5 @@
 #### Tạo webapp bằng Laravel có controller và rest-controller.
 #### Sử sụng Eloquent ORM và migration để map entity với table (có khoá ngoại và quan hệ (danh mục (category) - một nhiều - sản phẩm (product))).
 #### Sử dụng template engine blade làm view và nắm được một số cú pháp (@foreach, @if,...).
-#### Sử dụng bootstrap và bootstrap datatable để xây dựng giao diện.
+#### Sử dụng bootstrap, bootstrap datatable và jquery để xây dựng giao diện và tương tác với giao diện.
 #### Một số kiến thức về cú pháp trong PHP.
