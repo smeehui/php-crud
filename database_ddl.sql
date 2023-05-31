@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 31, 2023 at 10:45 PM
+-- Generation Time: May 31, 2023 at 10:52 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -24,6 +24,27 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `categories`
+--
+
+CREATE TABLE `categories` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`id`, `name`) VALUES
+(1, 'Cell phone'),
+(3, 'Laptop'),
+(4, 'PC'),
+(2, 'Tablet');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `products`
 --
 
@@ -37,8 +58,26 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `price`, `quantity`, `category_id`, `description`) VALUES
+(1685559849618, 'iPhone 14x', 1299, 30, 1, 'Super strong phone!'),
+(1685559948182, 'Asus ROG', 2999, 6, 4, 'Strong gaming PC!'),
+(1685560839413, 'Assus Nitro 5', 1499, 10, 3, 'Gamming Laptop with RPG keyboard!'),
+(1685564610894, 'iPad Pro 2023', 1299, 20, 2, 'New iPad from Apple!'),
+(1685565371195, 'iPhone X', 599, 32, 1, 'Like NEW 99%!');
+
+--
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indexes for table `products`
